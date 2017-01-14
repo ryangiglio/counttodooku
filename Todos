@@ -1,0 +1,29 @@
+Style all the things
+
+Drag to reorder (MOST COMPLICATED)
+  React DnD seems most popular
+  Simple Sortable Example https://gaearon.github.io/react-dnd/examples-sortable-simple.html
+
+  need to abstract out each todo list OL into its own component so they can both be wrapped in separate dragdropcontexts. shouldn't be able to drag and drop things in between the two lists
+  also need to figure out how to handle "merging" the final results since the're coming from one place. Putting things at their index in the list won't work. for example
+    one
+    two
+    three
+
+    (comp)
+    four
+    five
+    six
+
+    if you drag six above five, it'll be index 1 in that list but still should be index 4 in the overall list.
+
+Credit/About page
+
+Refactor/clean up/comment code
+  duplicated code to find the index in the todos reducer 
+
+  addtodoform de-inline the handler
+
+  TodoItem use autobind
+
+BUGS

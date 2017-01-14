@@ -1,0 +1,99 @@
+.TodoItem {
+  position: relative;
+  border-bottom: 1px solid grey;
+
+  &:hover {
+    .TodoItem__mod--edit,
+    .TodoItem__mod--delete {
+      display: inline-block;
+    }
+  }
+
+  &--incomplete {
+    @extend .TodoItem;
+    font-size: 24px;
+
+    &:first-child {
+      font-size: 48px;
+
+      .TodoItem__label::before {
+        width: 48px;
+        height: 48px;
+      }
+    }
+  }
+
+  &--completed {
+    @extend .TodoItem;
+    font-size: 14px;
+    color: grey;
+    text-decoration: line-through;
+  }
+
+  &__checkbox {
+    //
+  }
+
+  &__text {
+    line-height: 1em;
+
+    border: none;
+
+    &:focus {
+      outline: none;
+    }
+
+    &--incomplete {
+      @extend .TodoItem__text;
+    }
+    &--completed {
+      @extend .TodoItem__text;
+    }
+  }
+
+  &__timer {
+    display: inline-block;
+    margin-left: 10px;
+  }
+
+  &__mod {
+
+    &--edit,
+    &--delete {
+      display: none;
+      font-size: 14px;
+
+      cursor: pointer;
+    }
+  }
+
+  &__edit-form {
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+
+    z-index: 2;
+
+    width: 300px;
+    height: 50px;
+
+    padding: 10px;
+
+    line-height: 0;
+
+    background-color: #ffffff;
+
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  }
+
+  &__edit-text {
+    position: relative;
+
+    width: 100%;
+    height: 30px;
+
+    padding: 0 5px;
+
+    font-size: 14px;
+  }
+}
