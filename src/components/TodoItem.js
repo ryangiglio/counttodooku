@@ -41,11 +41,15 @@ class TodoItem extends React.Component {
 
   // When the props change
   componentWillReceiveProps(newProps) {
-    // If this wasn't previously active but now it's going to be
-    if (!this.props.isActive && newProps.isActive) {
-      this.activate();
-    } else { // It's not active
-      // If it WAS active
+    
+    // If it should be active
+    if (newProps.isActive) {
+      // If it wasn't active previously
+      if (!this.props.isActive) {
+        this.activate();
+      } // Else it's already active (triggered by rename etc)
+    } else {
+      // If it was active previously
       if (this.state.active) {
         this.deactivate();
       }
