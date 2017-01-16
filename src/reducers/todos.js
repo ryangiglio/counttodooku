@@ -66,8 +66,9 @@ const todos = (state = [], action) => {
 
       return [
         ...state.slice(0, index),
-        todo(state[index], action),
-        ...state.slice(index + 1)
+        ...state.slice(index + 1),
+        // Move to the end of the list when it's completed
+        todo(state[index], action)
       ];
 
     case 'UPDATE_TIMER':
