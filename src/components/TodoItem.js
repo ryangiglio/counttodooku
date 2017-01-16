@@ -40,17 +40,17 @@ class TodoItem extends React.Component {
     if (newProps.isActive) {
       // If it wasn't active previously
       if (!this.props.isActive) {
-        this.activate();
+        this.startTimer();
       } // Else it's already active (triggered by rename etc)
     } else {
       // If it was active previously
       if (this.state.active) {
-        this.deactivate();
+        this.stopTimer();
       }
     }
   }
 
-  activate() {
+  startTimer() {
     this.setState({
       active: true,
       startTimestamp: Date.now(),
@@ -67,7 +67,7 @@ class TodoItem extends React.Component {
     window.addEventListener('beforeunload', this.updateSavedTime);
   }
 
-  deactivate(save) {
+  stopTimer(save) {
     this.setState({
       active: false,
     });
