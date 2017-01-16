@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import autoBind from 'react-autobind';
 
 import './TodoItem.css';
 
@@ -14,28 +15,21 @@ class TodoItem extends React.Component {
       editing: false,
     };
 
-    this.updateSavedTime = this.updateSavedTime.bind(this);
-    this.activate = this.activate.bind(this);
-    this.deactivate = this.deactivate.bind(this);
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.toggleEditing = this.toggleEditing.bind(this);
-    this.closeEditTooltip = this.closeEditTooltip.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
+    autoBind(this);
   }
 
   componentDidMount() {
     // If it's starting as the active item
     if (this.props.isActive && !this.state.active) {
-      this.activate();
+      this.startTimer();
     }
   }
 
   componentWillUnmount() {
-    // If it's active, deactivate it before it's unmounted
+    // If it's active, deactivate timer it before it's unmounted
     if (this.props.isActive) {
       // Save to state if it's not deleting
-      this.deactivate(!this.state.deleting);
+      this.stopTimer(!this.state.deleting);
     }
   }
 
