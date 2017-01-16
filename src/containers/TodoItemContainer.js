@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import TodoItem from '../components/TodoItem';
 
-import { toggleCompleted, updateTimer, removeTodo, editTodo } from '../actions/todos';
+import { toggleCompleted, updateTimer, moveTodo, removeTodo, editTodo } from '../actions/todos';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -17,6 +17,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     saveTime: (id, newSeconds) => {
       dispatch(updateTimer(id, newSeconds));
+    },
+    moveItem: (oldIndex, newIndex) => {
+      dispatch(moveTodo(oldIndex, newIndex));
     },
     removeItem: (id) => {
       dispatch(removeTodo(id));

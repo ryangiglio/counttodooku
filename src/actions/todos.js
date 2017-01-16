@@ -15,6 +15,15 @@ export const editTodo = (id, text) => {
   }
 }
 
+// Move Todo
+export const moveTodo = (oldIndex, newIndex) => {
+  return {
+    type: 'MOVE_TODO',
+    oldIndex,
+    newIndex
+  }
+}
+
 // Remove Todo
 export const removeTodo = (id) => {
   return {

@@ -1,3 +1,5 @@
+import shortId from 'shortid';
+
 const todo = (state = {}, action) => {
   switch (action.type) {
     case 'ADD_TODO':
@@ -36,7 +38,9 @@ const todos = (state = [], action) => {
 
   switch (action.type) {
     case 'ADD_TODO':
-      const newID = (state.length > 0 ? state[state.length - 1].id + 1 : 0); 
+      // const newID = (state.length > 0 ? state[state.length - 1].id + 1 : 0); 
+      const newID = shortId.generate();
+
       return [
         // All the existing todos
         ...state,
@@ -51,6 +55,17 @@ const todos = (state = [], action) => {
         ...state.slice(0, index),
         todo(state[index], action),
         ...state.slice(index + 1)
+      ];
+
+    case 'MOVE_TODO':
+      // Remove the todo from its original position
+      let [ thisTodo ] = state.splice(action.oldIndex, 1);
+
+      // Add it to its new position
+      state.splice(action.newIndex, 0, thisTodo);
+
+      return [
+        ...state
       ];
 
     case 'REMOVE_TODO':

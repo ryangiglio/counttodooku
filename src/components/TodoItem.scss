@@ -4,7 +4,8 @@
 
   &:hover {
     .TodoItem__mod--edit,
-    .TodoItem__mod--delete {
+    .TodoItem__mod--delete,
+    .TodoItem__mod--sort {
       display: inline-block;
     }
   }
@@ -59,7 +60,8 @@
   &__mod {
 
     &--edit,
-    &--delete {
+    &--delete,
+    &--sort {
       display: none;
       font-size: 14px;
 

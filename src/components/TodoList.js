@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 import './TodoList.css';
 
-import TodoItemContainer from '../containers/TodoItemContainer';
+import TodoItemListContainer from '../containers/TodoItemListContainer';
 
 class TodoList extends React.Component {
   render() {
@@ -13,28 +13,12 @@ class TodoList extends React.Component {
 
     return (
       <div>
-        <ol className="TodoList">
-          {incompleteTodos.map((todo, index)=>{
-              return (
-                <TodoItemContainer
-                  key={todo.id}
-                  id={todo.id}
-                  isActive={index === 0} />
-              );
-          })}
-        </ol>
-        <h2>Completed</h2>
-        <ol className="TodoList">
-          {completeTodos.map((todo, index)=>{
+        <TodoItemListContainer
+          todos={incompleteTodos} />
 
-            return (
-              <TodoItemContainer
-                key={todo.id}
-                id={todo.id}
-                isActive={false} />
-            )
-          })}
-        </ol>
+        <h2>Completed</h2>
+        <TodoItemListContainer
+          todos={completeTodos} />
       </div>
     );
   }
