@@ -9,5 +9,7 @@ Refactor/clean up/comment code
 
 Add listener to tick so it saves when the user changes tabs in addition to when they close the page
 
+promote to top button
+
 BUGS
   WHen an item is sorted off of #1, it's not saving its seconds
