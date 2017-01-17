@@ -27,3 +27,11 @@ todos
 
 visibilityFilter
   SET_FILTER
+
+
+
+
+
+TodoList - wrapper for the whole todo list section of the app
+  TodoItemList - ol element that creates a visible list of things
+    TodoItem - one item
