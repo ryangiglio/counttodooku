@@ -1,13 +1,33 @@
+/**
+ * components/TodoItem.js
+ * 
+ * TodoItem component
+ * This one's a doozy!
+ *
+ * NOTE: I realize updating the timer as component state rather than updating the Redux store and letting it cascade is generally an anti-pattern. I'm doing it anyway for two reasons:
+ * 1) The timer ticks every second and I didn't want to be constantly updating the state
+ * 2) I want the timer displayed to be as accurate as possible - if this app were updated to use a remotely stored database rather than local storage, the timer wouldn't update until the async call was finished and the state was updated.
+ *
+ * As such there's a lot of gymnastics here to make sure it only saves to the Redux store when necessary to not lose the data. Is all that worth it? Maybe not, but it was an interesting puzzle to solve.
+ */
+
+// React
 import React, { PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import autoBind from 'react-autobind';
 
+// Drag and Drop
 import { DragSource, DropTarget } from 'react-dnd';
+import { flow } from 'lodash'; // Allow cascading higher order components
 
-import { flow } from 'lodash';
-
+// Style
 import './TodoItem.css';
 
+/**
+ * React DnD setup
+ */
+
+// Drag and Drop "source"
 const todoItemSource = {
   beginDrag(props) {
     // Return the data describing the dragged item
@@ -17,6 +37,7 @@ const todoItemSource = {
   }
 };
 
+// Drag and Drop "target"
 const todoItemTarget = {
   hover(props, monitor, component) {
     // console.log(props);
@@ -82,6 +103,7 @@ const sourceCollect = (connect, monitor) => {
     isDragging: monitor.isDragging()
   };
 };
+
 const targetCollect = (connect) => {
   return {
     // Call this function inside render()
@@ -90,12 +112,16 @@ const targetCollect = (connect) => {
   };
 };
 
+/**
+ * Main TodoItem component
+ */
 class TodoItem extends React.Component {
   constructor(props) {
     super(props);
 
-    // Set the initial seconds
     this.state = {
+      // Set initial seconds
+      // NOTE: This state ONLY reflects what time is being displayed. It isn't mirrored by the Redux store. For more info see the note at the top of this file 
       seconds: props.todo.timerSeconds,
       active: false,
       deleting: false,
@@ -106,100 +132,129 @@ class TodoItem extends React.Component {
   }
 
   componentDidMount() {
-    // If it's starting as the active item
-    if (this.props.isActive && !this.state.active) {
+    if (
+      // If it's first in the array and passed the isActive prop &&
+      this.props.isActive &&
+      // It isn't already active because of a remount
+      !this.state.active) {
+      // Start the timer
       this.startTimer();
     }
   }
 
   componentWillUnmount() {
-    // If it's active, deactivate timer it before it's unmounted
+    // If it's active
     if (this.props.isActive) {
-      // Save to state if it's not deleting
+      // Stop the timer before it's unmounted and save the state IF it's not being unmounted because of a delete
       this.stopTimer(!this.state.deleting);
     }
   }
 
   // When the props change
   componentWillReceiveProps(newProps) {
-    
-    // If it should be active
+    // If it's first in the array and passed the isActive prop
     if (newProps.isActive) {
-      // If it wasn't active previously
+      // If it was just moved to first and wasn't previously active
       if (!this.props.isActive) {
+        // Start the timer
         this.startTimer();
-      } // Else it's already active (triggered by rename etc)
-    } else {
+      }
+    } else { // It isn't first and shouldn't be active
       // If it was active previously or it's being dragged out of active
       if (this.state.active) {
+        // Stop the timer and save the time
         this.stopTimer(true);
       }
     }
   }
 
+  // Function to start the timer ticking
   startTimer() {
     this.setState({
-      active: true,
-      startTimestamp: Date.now(),
-    }, () => {
+      active: true, // Set active flag
+      startTimestamp: Date.now(), // Save timestamp of start time to do math with
+    }, () => { // Once the state has been set
+      // Save the timer interval to the object
       this.timer = setInterval(() => {
+        // Calculate how many seconds have passed since the last tick
+        // NOTE: Not just incrementing here because if there's a processing delay, or, more importantly, if the user tabbed out of the browser and the execution paused, it will have been many more than 1 second
         const secondsPassed = Math.floor((Date.now() - this.state.startTimestamp) / 1000);
 
+        // Update the seconds
         this.setState({
           seconds: this.props.todo.timerSeconds + secondsPassed,
         });
       }, 1000);
     });
     
+    // Add listener to save the time if the window is closed
     window.addEventListener('beforeunload', this.updateSavedTime);
   }
 
+  // Function to stop the timer ticking
   stopTimer(save) {
     this.setState({
-      active: false,
+      active: false, // Unset active flag
     });
+
+    // Remove the timer interval
     clearInterval(this.timer);
+
+    // Remove listener to save the time if the window is closed
     window.removeEventListener('beforeunload', this.updateSavedTime);
 
+    // If we should also save (it isn't being deleted)
     if (save) {
+      // Save the time
       this.updateSavedTime();
     }
   }
 
+  // Function to save the new time to the Redux store
   updateSavedTime(e) {
+    // Recalculate how many seconds have passed since the timer started
+    // NOTE: This doesn't simply use this.state.seconds because if the page was backgrounded for a while and closed without revisiting, this.state.seconds is no longer correct
     const secondsPassed = Math.floor((Date.now() - this.state.startTimestamp) / 1000);
 
-    // Update the stored seconds
+    // Update the stored seconds via Redux action
     this.props.saveTime(this.props.id, this.props.todo.timerSeconds + secondsPassed);
   }
 
+  // Function to handle "completed" checkbox
   handleCheckboxChange() {
     // Toggle the completed state
     this.props.toggleCompleted(this.props.id);
   }
 
+  // Function to handle "delete" button
   handleDelete() {
     this.setState({
-      deleting: true,
+      deleting: true, // Set deleting flag so we don't save the seconds in componentWillUnmount
     }, () => {
+      // Remove the item via Redux action
       this.props.removeItem(this.props.id);
     });
   }
 
+  // Function to toggle the edit form
   toggleEditing() {
     this.setState({
-      editing: !this.state.editing,
+      editing: !this.state.editing, // Flip the flag that displays the form
     }, () => {
       // If editing
       if (this.state.editing) {
+        // Add event listener to close the tooltip if you click anywhere
         document.addEventListener('click', this.closeEditTooltip);
+        // Focus the form input
         this.editInput.focus();
       } else {
+        // Remove event listener to close the tooltip if you click anywhere
         document.removeEventListener('click', this.closeEditTooltip);
       }
     });
   }
 
+  // Function to close the edit form on click
   closeEditTooltip(e) {
     if (
       // If you didn't click the input
@@ -210,11 +265,14 @@ class TodoItem extends React.Component {
     }
   }
 
+  // Function to handle edit form submit
   handleEdit(e) {
     e.preventDefault();
 
+    // Stop editing
     this.toggleEditing();
 
+    // Save the new value via Redux action
     this.props.editItem(this.props.id, this.editInput.value);
   }
 
@@ -257,6 +315,7 @@ TodoItem.propTypes = {
   editItem: PropTypes.func.isRequired,
 };
 
+// Cascade React DnD higher order components
 export default flow(
   DragSource('TODO_ITEM', todoItemSource, sourceCollect),
   DropTarget('TODO_ITEM', todoItemTarget, targetCollect)

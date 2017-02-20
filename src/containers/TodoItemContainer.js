@@ -1,15 +1,24 @@
+/**
+ * containers/TodoItemContainer.js
+ * 
+ * TodoItem Redux container
+ */
+
+// Redux
 import { connect } from 'react-redux';
-
-import TodoItem from '../components/TodoItem';
-
 import { toggleCompleted, updateTimer, moveTodo, removeTodo, editTodo } from '../actions/todos';
 
+// Components
+import TodoItem from '../components/TodoItem';
+
+// Make Redux state available to the component
 const mapStateToProps = (state, ownProps) => {
   return {
     todo: state.todos.find(todo => todo.id === ownProps.id)
   }
 }
 
+// Make Redux actions available to the component
 const mapDispatchToProps = (dispatch) => {
   return {
     toggleCompleted: (id) => {
@@ -26,10 +35,11 @@ const mapDispatchToProps = (dispatch) => {
     },
     editItem: (id, text) => {
       dispatch(editTodo(id, text));
-    }
+    },
   }
 }
 
+// Connect Redux to components
 const TodoItemContainer = connect(
   mapStateToProps,
   mapDispatchToProps

@@ -1,11 +1,23 @@
-import shortId from 'shortid';
+/**
+ * reducers/todos.js
+ * 
+ * Reducers for the Todo list array and individual Todos
+ */
 
+import shortId from 'shortid'; // Generate unique ID keys
+
+// Individual Todo reducer
 const todo = (state = {}, action) => {
   switch (action.type) {
     case 'ADD_TODO':
       return {
-        ...state,
+        // New ID
+        ...state, 
+
+        // Passed values
         text: action.text,
+
+        // Default values
         completed: false,
         timerSeconds: 0, 
       };
@@ -33,12 +45,12 @@ const todo = (state = {}, action) => {
   }
 }
 
+// Todo array reducer
 const todos = (state = [], action) => {
   let index;
 
   switch (action.type) {
     case 'ADD_TODO':
-      // const newID = (state.length > 0 ? state[state.length - 1].id + 1 : 0); 
       const newID = shortId.generate();
 
       return [
@@ -49,11 +61,17 @@ const todos = (state = [], action) => {
       ];
 
     case 'EDIT_TODO':
+      // Find the todo by ID
       index = state.findIndex(todo => todo.id === action.id);
 
       return [
+        // All the todos before this todo
         ...state.slice(0, index),
+
+        // Edit this todo
         todo(state[index], action),
+
+        // All the todos after this todo
         ...state.slice(index + 1)
       ];
 
@@ -69,29 +87,44 @@ const todos = (state = [], action) => {
       ];
 
     case 'REMOVE_TODO':
+      // Find the todo by ID
       index = state.findIndex(todo => todo.id === action.id);
 
       return [
+        // All the todos before this todo
         ...state.slice(0, index),
+
+        // All the todos after this todo
         ...state.slice(index + 1)
       ];
 
     case 'TOGGLE_COMPLETED':
+      // Find the todo by ID
       index = state.findIndex(todo => todo.id === action.id);
 
       return [
+        // All the todos before this todo
         ...state.slice(0, index),
+
+        // All the todos after this todo
         ...state.slice(index + 1),
-        // Move to the end of the list when it's completed
+
+        // Move this todo to the end of the list when it's completed
         todo(state[index], action)
       ];
 
     case 'UPDATE_TIMER':
+      // Find the todo by ID
       index = state.findIndex(todo => todo.id === action.id);
 
       return [
+        // All the todos before this todo
         ...state.slice(0, index),
+
+        // Update this todo in place
         todo(state[index], action),
+
+        // All the todos before this todo
         ...state.slice(index + 1)
       ];
 

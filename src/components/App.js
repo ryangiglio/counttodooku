@@ -1,9 +1,18 @@
+/**
+ * components/App.js
+ * 
+ * Main app component
+ */
+
+// React
 import React from 'react';
 
-import './App.css';
-
+// Components
 import TodoListContainer from '../containers/TodoListContainer';
 import AddTodoForm from '../components/AddTodoForm';
+
+// Style
+import './App.css';
 
 const App = () => {
   return (

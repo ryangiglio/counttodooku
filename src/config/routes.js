@@ -1,13 +1,23 @@
+/**
+ * config/routes.js
+ * 
+ * Set up routes
+ */
+
 // React
 import React from 'react';
 import { Router, Route } from 'react-router';
-import { Provider } from 'react-redux';
 
-// Store
+// Redux
+import { Provider } from 'react-redux';
 import store, { history } from './store';
 
+// Components
 import App from '../components/App';
 
+/**
+ * The whole app is wrapped in a store provider since there's only the one route and the store should always be accessible via that route
+ */
 const routes = (
   <Provider store={store}>
     <Router history={history}>

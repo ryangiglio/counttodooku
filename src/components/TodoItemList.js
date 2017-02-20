@@ -1,21 +1,25 @@
-import React, { PropTypes } from 'react';
-import autoBind from 'react-autobind';
+/**
+ * components/TodoItemList.js
+ * 
+ * List of TodoItems
+ */
 
+// React
+import React, { PropTypes } from 'react';
+
+// Drag and Drop
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
-import './TodoItemList.css';
-
+// Components
 import TodoItemContainer from '../containers/TodoItemContainer';
 
+// Style
+import './TodoItemList.css';
+
 class TodoItemList extends React.Component {
-  constructor(props) {
-    super(props);
-
-    autoBind(this);
-  }
-
   render() {
+    // Destructure the filtered (by parent) todo list from the props
     const { todos } = this.props;
 
     return (

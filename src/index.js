@@ -1,3 +1,9 @@
+/**
+ * /index.js
+ * 
+ * Sets up React on the root element
+ */
+
 // React
 import { render } from 'react-dom';
 
