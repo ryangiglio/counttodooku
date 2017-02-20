@@ -38,7 +38,7 @@ class TodoList extends React.Component {
         <TodoItemList
           todos={incompleteTodos} />
 
-        <h2>Completed <span onClick={this.handleClearCompletedClick}>Clear All</span></h2>
+        <h2>Completed <span className="TodoList__clear-completed" onClick={this.handleClearCompletedClick}>Clear All</span></h2>
         <TodoItemList
           todos={completeTodos} />
       </div>

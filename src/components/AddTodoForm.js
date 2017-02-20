@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import autoBind from 'react-autobind';
 
-// import './AddTodoForm.css';
+import './AddTodoForm.css';
 
 class AddTodoForm extends React.Component {
   constructor(props) {
@@ -27,9 +27,9 @@ class AddTodoForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleAddFormSubmit}>
-        <input type="text" ref={(node) => { this.addInput = node }} />
-        <button>Submit</button>
+      <form className="AddTodoForm" onSubmit={this.handleAddFormSubmit}>
+        <input className="AddTodoForm__input" type="text" ref={(node) => { this.addInput = node }} />
+        <button className="AddTodoForm__button">Add Todo</button>
       </form>
     );
   }

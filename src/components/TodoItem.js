@@ -294,10 +294,10 @@ class TodoItem extends React.Component {
           <input className="TodoItem__checkbox" type="checkbox" id={`todo${id}`} onChange={this.handleCheckboxChange} checked={todo.completed} />
           <label className={`TodoItem__label${(todo.completed ? '--completed' : '--incomplete')}`} htmlFor={`todo${id}`}>{todo.text}</label>
           <span className="TodoItem__timer">{new Date(this.state.seconds * 1000).toISOString().substr(11, 8)}</span>
-          { !todo.completed && <i className="TodoItem__mod--edit fa fa-pencil" aria-hidden="true" onClick={this.toggleEditing}></i> }
-          { !todo.completed && connectDragSource(<i className="TodoItem__mod--sort fa fa-sort" aria-hidden="true"></i>) }
-          { !todo.completed && <i className="TodoItem__mod--promote fa fa-arrow-up" aria-hidden="true" onClick={this.handlePromote}></i> }
-          <i className="TodoItem__mod--delete fa fa-times-circle" aria-hidden="true" onClick={this.handleDelete}></i>
+          { !todo.completed && <i className="TodoItem__mod--edit fa fa-pencil" aria-hidden="true" title="Edit Text" onClick={this.toggleEditing}></i> }
+          { !todo.completed && connectDragSource(<i className="TodoItem__mod--sort fa fa-sort" title="Drag to Reorder" aria-hidden="true"></i>) }
+          { !todo.completed && <i className="TodoItem__mod--promote fa fa-arrow-up" aria-hidden="true" title="Move to Top" onClick={this.handlePromote}></i> }
+          <i className="TodoItem__mod--delete fa fa-times-circle" aria-hidden="true" title="Delete Todo" onClick={this.handleDelete}></i>
 
           { this.state.editing && 
             <form className="TodoItem__edit-form" onSubmit={this.handleEdit}>
