@@ -11,31 +11,4 @@ Add listener to tick so it saves when the user changes tabs in addition to when 
 promote to top button
 
 BUGS
-  Weird sorting once something has been completed
-    Todo items that are created while there are complete items behave weirdly. An item created while at least one item is completed will become "stuck" to the bottom slot. If you drag it around, it can rearrange the order of the items under it, but will return to the bottom slot if you let go. 
-
-    Steps to reproduce:
-
-        create four items a-d
-        create item e
-        complete item e
-        create item f
-        attempt to drag f to the top. This fails, and item f pops back to the bottom
-        attempt to drag f to the top again. this time the items under it shift, but f returns to the bottom
-        attempt to drag f to the top. As in step 5, no effect.
-        attempt to drag f to the top. As in 6. shifting.
-
-
-    Things get even weirder if you create multiple new items while an item is completed. Items will be "stuck" to their slots as above. However, items that are pushed above their stuck slots via the "shifting" method illustrated in steps 6 and 8 above will behave normally. The previously normal items, now pushed into "stuck" slots" will remain stuck there unless shifted out. 
-
-    Steps to reproduce: 
-
-        create four items a-d
-        create item e
-        complete item e
-        create 2 items f and g
-        try to move f. no effect
-        try to move g. shifting effect
-        use the shifting effect to move item d above any item a-d.
-        promote item f to the top slot, no problem.
-        try to move the item in the second to last slot but always put it back where it was. This either has no effect or moves freely among every slot but the last. The effect changes every other time you attempt to drag it
+  None

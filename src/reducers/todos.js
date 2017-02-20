@@ -5,6 +5,7 @@
  */
 
 import shortId from 'shortid'; // Generate unique ID keys
+import { findIndex } from 'lodash'; // Allow cascading higher order components
 
 // Individual Todo reducer
 const todo = (state = {}, action) => {
@@ -53,12 +54,32 @@ const todos = (state = [], action) => {
     case 'ADD_TODO':
       const newID = shortId.generate();
 
-      return [
-        // All the existing todos
-        ...state,
-        // Empty object for new todo
-        todo({id: newID}, action)
-      ];
+      // Find the first completed todo's index
+      const firstCompletedIndex = findIndex(state, (todo) => todo.completed);
+
+      // If there are 0 completed todos
+      if (firstCompletedIndex === -1) {
+        // Add the new todo to the end
+        return [
+          // All the existing todos
+          ...state,
+
+          // Empty object for new todo
+          todo({id: newID}, action)
+        ];
+      } else {
+        // Insert the new Todo at the end of the 'incomplete' section
+        return [
+          // All the incomplete todos
+          ...state.slice(0, firstCompletedIndex),
+
+          // Empty object for new todo
+          todo({id: newID}, action),
+
+          // All the complete todos
+          ...state.slice(firstCompletedIndex)
+        ]
+      }
 
     case 'EDIT_TODO':
       // Find the todo by ID
