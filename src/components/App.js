@@ -12,18 +12,20 @@ import TodoListContainer from '../containers/TodoListContainer';
 import AddTodoFormContainer from '../containers/AddTodoFormContainer';
 
 // Style
+import 'normalize.css';
 import './App.css';
+import dooku from '../assets/little-dooku.jpg';
 
 const App = () => {
   return (
     <div className="container">
-      <div className="row">
-        <div className="col-xs-12">
-          <h1>Count Todooku</h1>
-          <TodoListContainer />
-          <AddTodoFormContainer />
-        </div>
-      </div>
+      <h1 className="logo">
+        <span className="logo__word">Count</span>
+        <img className="logo__image" src={dooku} alt="Count Dooku" />
+        <span className="logo__word">Todo(oku)</span>
+      </h1>
+      <TodoListContainer />
+      <AddTodoFormContainer />
     </div>
   );
 }

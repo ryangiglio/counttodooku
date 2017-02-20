@@ -6,9 +6,5 @@ Refactor
   duplicated code to find the index in the todos reducer 
     This is because I have to access by ID instead of index since I'm splitting the list into 2 and the indexes don't match
 
-Add listener to tick so it saves when the user changes tabs in addition to when they close the page
-
-promote to top button
-
 BUGS
-  None
+  Seconds don't save when the user backgrounds the tab and then closes without revisiting

@@ -1,3 +1,35 @@
 body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   min-height: 100vh;
+}
+
+.container {
+  width: 92%;
+  max-width: 1200px;
+
+  margin: 0 auto;
+}
+
+.logo {
+  height: 100px;
+
+  margin: 20px 0 40px;
+
+  font-size: 28px;
+  text-align: center;
+
+  @media screen and (min-width: 768px) {
+    font-size: 36px;
+  }
+
+  &__word {
+    display: inline-block;
+    line-height: 100px;
+    vertical-align: top;
+  }
+
+  &__image {
+    display: inline-block;
+    margin: 0 10px;
+  }
 }

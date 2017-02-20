@@ -24,6 +24,14 @@ export const moveTodo = (oldIndex, newIndex) => {
   }
 }
 
+// Promote Todo
+export const promoteTodo = (id) => {
+  return {
+    type: 'PROMOTE_TODO',
+    id,
+  }
+}
+
 // Remove Todo
 export const removeTodo = (id) => {
   return {
