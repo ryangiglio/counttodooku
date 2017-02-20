@@ -128,6 +128,15 @@ const todos = (state = [], action) => {
         ...state.slice(index + 1)
       ];
 
+    case 'CLEAR_COMPLETED':
+      // Get all the todos that haven't been completed
+      const incompleteTodos = state.filter(todo => !todo.completed);
+
+      return [
+        // Only return those
+        ...incompleteTodos
+      ];
+
     default:
       return state;
   }

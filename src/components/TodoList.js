@@ -6,14 +6,25 @@
 
 // React
 import React, { PropTypes } from 'react';
+import autoBind from 'react-autobind';
 
-import './TodoList.css';
+// Components
+import TodoItemList from '../components/TodoItemList';
 
-import TodoItemListContainer from '../containers/TodoItemListContainer';
 // Styles
 import './TodoList.css';
 
 class TodoList extends React.Component {
+  constructor(props) {
+    super(props);
+
+    autoBind(this);
+  }
+
+  handleClearCompletedClick() {
+    this.props.clearCompleted();
+  }
+
   render() {
     // Destructure the full todo list from the props
     const { todos } = this.props;
@@ -24,19 +35,20 @@ class TodoList extends React.Component {
 
     return (
       <div>
-        <TodoItemListContainer
+        <TodoItemList
           todos={incompleteTodos} />
 
-        <h2>Completed</h2>
-        <TodoItemListContainer
+        <h2>Completed <span onClick={this.handleClearCompletedClick}>Clear All</span></h2>
+        <TodoItemList
           todos={completeTodos} />
       </div>
     );
   }
-};
+}
 
 TodoList.propTypes = {
   todos: PropTypes.array.isRequired,
+  clearCompleted: PropTypes.func.isRequired,
 };
 
 export default TodoList;

@@ -18,9 +18,12 @@ const mapStateToProps = (state) => {
   }
 }
 
+// Make Redux actions available to the component
 const mapDispatchToProps = (dispatch) => {
   return {
-    addTodo
+    clearCompleted: () => {
+      dispatch(clearCompleted());
+    },
   }
 }
 
