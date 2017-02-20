@@ -9,7 +9,7 @@ import React from 'react';
 
 // Components
 import TodoListContainer from '../containers/TodoListContainer';
-import AddTodoForm from '../components/AddTodoForm';
+import AddTodoFormContainer from '../containers/AddTodoFormContainer';
 
 // Style
 import './App.css';
@@ -21,7 +21,7 @@ const App = () => {
         <div className="col-xs-12">
           <h1>Count Todooku</h1>
           <TodoListContainer />
-          <AddTodoForm />
+          <AddTodoFormContainer />
         </div>
       </div>
     </div>

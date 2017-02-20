@@ -1,33 +1,42 @@
-import React from 'react';
-import { connect } from 'react-redux';
-
-import { addTodo } from '../actions/todos';
+import React, { PropTypes } from 'react';
+import autoBind from 'react-autobind';
 
 // import './AddTodoForm.css';
 
-let AddTodoForm = ({ dispatch }) => {
-  let input;
+class AddTodoForm extends React.Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <form onSubmit={(e)=>{
-        e.preventDefault();
+    autoBind(this);
+  }
 
-        if (!input.value.trim()) {
-          return;
-        }
+  // Function to handle form submit
+  handleAddFormSubmit(e) {
+    e.preventDefault();
 
-        dispatch(addTodo(input.value));
+    // If the field isn't empty
+    if (!this.addInput.value.trim())
+      return;
 
-        input.value = '';
-      }}>
-      <input type="text" ref={(node) => {
-          input = node
-        }} />
-      <button>Submit</button>
-    </form>
-  );
-}
+    // Add the todo via Redux action
+    this.props.addItem(this.addInput.value);
 
-AddTodoForm = connect()(AddTodoForm);
+    // Clear the form
+    this.addInput.value = '';
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleAddFormSubmit}>
+        <input type="text" ref={(node) => { this.addInput = node }} />
+        <button>Submit</button>
+      </form>
+    );
+  }
+};
+
+AddTodoForm.propTypes = {
+  addItem: PropTypes.func.isRequired,
+};
 
 export default AddTodoForm;
