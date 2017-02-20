@@ -213,7 +213,7 @@ class TodoItem extends React.Component {
   // Function to save the new time to the Redux store
   updateSavedTime(e) {
     // Recalculate how many seconds have passed since the timer started
-    // NOTE: This doesn't simply use this.state.seconds because if the page was backgrounded for a while and closed without revisiting, this.state.seconds is no longer correct
+    // NOTE: This doesn't simply use this.state.seconds because if the page was backgrounded for a while and closed immediately, this.state.seconds is no longer correct
     const secondsPassed = Math.floor((Date.now() - this.state.startTimestamp) / 1000);
 
     // Update the stored seconds via Redux action
@@ -276,21 +276,28 @@ class TodoItem extends React.Component {
     this.props.editItem(this.props.id, this.editInput.value);
   }
 
+  // Function to handle edit form submit
+  handlePromote(e) {
+    e.preventDefault();
+
+    // Save the new value via Redux action
+    this.props.promoteItem(this.props.id);
+  }
+
   render() {
     const { todo, id, connectDragSource, connectDragPreview, connectDropTarget, isDragging } = this.props;
 
     return (
+
       connectDragPreview(connectDropTarget(
         <li className={`row TodoItem${(todo.completed ? '--completed' : '--incomplete')}`} style={{ opacity: (isDragging ? 0 : 1) }}>
           <input className="TodoItem__checkbox" type="checkbox" id={`todo${id}`} onChange={this.handleCheckboxChange} checked={todo.completed} />
           <label className={`TodoItem__label${(todo.completed ? '--completed' : '--incomplete')}`} htmlFor={`todo${id}`}>{todo.text}</label>
           <span className="TodoItem__timer">{new Date(this.state.seconds * 1000).toISOString().substr(11, 8)}</span>
-          <i className="TodoItem__mod--edit fa fa-pencil" aria-hidden="true" onClick={this.toggleEditing}></i>
+          { !todo.completed && <i className="TodoItem__mod--edit fa fa-pencil" aria-hidden="true" onClick={this.toggleEditing}></i> }
+          { !todo.completed && connectDragSource(<i className="TodoItem__mod--sort fa fa-sort" aria-hidden="true"></i>) }
+          { !todo.completed && <i className="TodoItem__mod--promote fa fa-arrow-up" aria-hidden="true" onClick={this.handlePromote}></i> }
           <i className="TodoItem__mod--delete fa fa-times-circle" aria-hidden="true" onClick={this.handleDelete}></i>
-          {connectDragSource(
-            <i className="TodoItem__mod--sort fa fa-sort" aria-hidden="true"></i>
-          )}
-          
 
           { this.state.editing && 
             <form className="TodoItem__edit-form" onSubmit={this.handleEdit}>

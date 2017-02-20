@@ -6,7 +6,7 @@
 
 // Redux
 import { connect } from 'react-redux';
-import { toggleCompleted, updateTimer, moveTodo, removeTodo, editTodo } from '../actions/todos';
+import { toggleCompleted, updateTimer, moveTodo, promoteTodo, removeTodo, editTodo } from '../actions/todos';
 
 // Components
 import TodoItem from '../components/TodoItem';
@@ -29,6 +29,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     moveItem: (oldIndex, newIndex) => {
       dispatch(moveTodo(oldIndex, newIndex));
+    },
+    promoteItem: (id) => {
+      dispatch(promoteTodo(id));
     },
     removeItem: (id) => {
       dispatch(removeTodo(id));

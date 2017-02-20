@@ -107,6 +107,21 @@ const todos = (state = [], action) => {
         ...state
       ];
 
+    case 'PROMOTE_TODO':
+      // Find the todo by ID
+      index = state.findIndex(todo => todo.id === action.id);
+
+      return [
+        // Put that todo first
+        state[index],
+
+        // All the todos that were before it
+        ...state.slice(0, index),
+
+        // All the todos that were after it
+        ...state.slice(index + 1)
+      ];
+
     case 'REMOVE_TODO':
       // Find the todo by ID
       index = state.findIndex(todo => todo.id === action.id);
