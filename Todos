@@ -3,8 +3,15 @@ Style all the things
 Credit/About page
 
 Refactor
+  Split into Complete and Incomplete lists
+    This would be a whole refactor of the Redux system b/c all the reducers etc would break
+
   duplicated code to find the index in the todos reducer 
     This is because I have to access by ID instead of index since I'm splitting the list into 2 and the indexes don't match
+    The above would fix
+
 
 BUGS
   Seconds don't save when the user backgrounds the tab and then closes without revisiting
+
+  Reordering is broken for items that have been checked off and then un-checked because they don't get moved back up in the array
